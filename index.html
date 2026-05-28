@@ -1,515 +1,201 @@
-
-html_content = '''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minik Yürekler Anaokulu | Yakında Hizmetinizde</title>
-    <meta name="description" content="Minik Yürekler Anaokulu - Güngören İstanbul'da yakında hizmetinizde! Çocuk merkezli, oyun temelli eğitim.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root {
-            --peach: #FFF0E6;
-            --peach-deep: #FFD4B8;
-            --soft-green: #E8F5E9;
-            --green-deep: #A5D6A7;
-            --cream: #FFFDF5;
-            --warm-orange: #FF8C42;
-            --warm-orange-light: #FFB380;
-            --warm-orange-dark: #E67335;
-            --text-dark: #2D3436;
-            --text-medium: #636E72;
-            --text-light: #95A5A6;
-            --white: #FFFFFF;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minik Yürekler Anaokulu</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, var(--cream) 0%, var(--peach) 30%, var(--soft-green) 70%, var(--cream) 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+    body{
+      font-family:'Nunito',sans-serif;
+      height:100vh;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(-45deg,#ffb6c1,#ffd166,#a0e7e5,#b4f8c8);
+      background-size: 400% 400%;
+      animation: bgMove 12s ease infinite;
+      position:relative;
+    }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    @keyframes bgMove{
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
 
-        /* Floating particles */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
-        }
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0;
-            animation: particleFloat linear infinite;
-        }
-        @keyframes particleFloat {
-            0% {
-                opacity: 0;
-                transform: translateY(100vh) scale(0) rotate(0deg);
-            }
-            10% {
-                opacity: 0.6;
-            }
-            90% {
-                opacity: 0.6;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-20vh) scale(1) rotate(360deg);
-            }
-        }
+    /* Baloncuklar */
+    .bubble{
+      position:absolute;
+      bottom:-120px;
+      background:rgba(255,255,255,0.25);
+      border-radius:50%;
+      animation: float linear infinite;
+      backdrop-filter: blur(4px);
+    }
 
-        /* Blob shapes */
-        .blob-container {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.5;
-            animation: blobMove 20s ease-in-out infinite;
-        }
-        .blob-1 {
-            width: 500px;
-            height: 500px;
-            background: var(--peach-deep);
-            top: -10%;
-            right: -10%;
-            animation-delay: 0s;
-        }
-        .blob-2 {
-            width: 400px;
-            height: 400px;
-            background: var(--green-deep);
-            bottom: -15%;
-            left: -10%;
-            animation-delay: -7s;
-        }
-        .blob-3 {
-            width: 300px;
-            height: 300px;
-            background: var(--warm-orange-light);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0.3;
-            animation-delay: -14s;
-        }
-        @keyframes blobMove {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-                border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-            }
-            25% {
-                transform: translate(30px, -30px) scale(1.1);
-                border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-            }
-            50% {
-                transform: translate(-20px, 20px) scale(0.95);
-                border-radius: 50% 50% 40% 60% / 40% 50% 60% 50%;
-            }
-            75% {
-                transform: translate(20px, 10px) scale(1.05);
-                border-radius: 40% 60% 50% 50% / 60% 40% 50% 50%;
-            }
-        }
+    @keyframes float{
+      0%{
+        transform:translateY(0) rotate(0deg);
+        opacity:0;
+      }
+      10%{
+        opacity:1;
+      }
+      100%{
+        transform:translateY(-120vh) rotate(360deg);
+        opacity:0;
+      }
+    }
 
-        /* Main card */
-        .main-card {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 48px;
-            padding: 60px 48px;
-            max-width: 560px;
-            width: 90%;
-            text-align: center;
-            box-shadow:
-                0 8px 32px rgba(255, 140, 66, 0.1),
-                0 32px 64px rgba(255, 140, 66, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            animation: cardAppear 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-            opacity: 0;
-            transform: translateY(40px) scale(0.95);
-        }
-        @keyframes cardAppear {
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
+    .container{
+      width:90%;
+      max-width:700px;
+      text-align:center;
+      padding:50px 35px;
+      border-radius:30px;
+      background:rgba(255,255,255,0.18);
+      backdrop-filter: blur(14px);
+      box-shadow:0 8px 40px rgba(0,0,0,0.15);
+      animation: fadeUp 1.2s ease;
+      z-index:2;
+    }
 
-        /* Logo area */
-        .logo-area {
-            margin-bottom: 32px;
-            animation: fadeInUp 0.8s ease 0.4s both;
-        }
-        .logo-icon-wrap {
-            width: 88px;
-            height: 88px;
-            background: linear-gradient(135deg, var(--warm-orange), var(--warm-orange-dark));
-            border-radius: 28px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 40px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(255, 140, 66, 0.35);
-            animation: gentlePulse 3s ease-in-out infinite;
-        }
-        @keyframes gentlePulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 8px 32px rgba(255, 140, 66, 0.35); }
-            50% { transform: scale(1.05); box-shadow: 0 12px 40px rgba(255, 140, 66, 0.45); }
-        }
-        .logo-name {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            line-height: 1.2;
-        }
-        .logo-name span {
-            display: block;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--warm-orange);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
+    @keyframes fadeUp{
+      from{
+        opacity:0;
+        transform:translateY(40px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
 
-        /* Coming soon badge */
-        .coming-soon-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, var(--warm-orange), var(--warm-orange-dark));
-            color: var(--white);
-            padding: 14px 32px;
-            border-radius: 999px;
-            font-weight: 800;
-            font-size: 1.15rem;
-            margin-bottom: 28px;
-            box-shadow: 0 6px 24px rgba(255, 140, 66, 0.35);
-            animation: fadeInUp 0.8s ease 0.6s both, badgeGlow 2s ease-in-out infinite;
-        }
-        @keyframes badgeGlow {
-            0%, 100% { box-shadow: 0 6px 24px rgba(255, 140, 66, 0.35); }
-            50% { box-shadow: 0 8px 32px rgba(255, 140, 66, 0.5); }
-        }
-        .coming-soon-badge i {
-            animation: sparkle 1.5s ease-in-out infinite;
-        }
-        @keyframes sparkle {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-            50% { transform: scale(1.3) rotate(15deg); opacity: 0.8; }
-        }
+    .logo{
+      font-size:70px;
+      animation: bounce 2.5s infinite;
+      margin-bottom:10px;
+    }
 
-        /* Tagline */
-        .tagline {
-            font-size: 1.15rem;
-            color: var(--text-medium);
-            margin-bottom: 36px;
-            line-height: 1.7;
-            animation: fadeInUp 0.8s ease 0.8s both;
-        }
-        .tagline strong {
-            color: var(--warm-orange);
-            font-weight: 700;
-        }
+    @keyframes bounce{
+      0%,100%{
+        transform:translateY(0);
+      }
+      50%{
+        transform:translateY(-12px);
+      }
+    }
 
-        /* Contact info */
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-bottom: 32px;
-            animation: fadeInUp 0.8s ease 1s both;
-        }
-        .contact-item {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: var(--text-medium);
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 16px;
-        }
-        .contact-item:hover {
-            color: var(--warm-orange);
-            background: var(--peach);
-        }
-        .contact-item i {
-            width: 36px;
-            height: 36px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-        .contact-item i.orange { background: var(--peach); color: var(--warm-orange); }
-        .contact-item i.green { background: var(--soft-green); color: #4CAF50; }
-        .contact-item i.pink { background: #FCE4EC; color: #E91E63; }
+    h1{
+      font-size:48px;
+      color:#fff;
+      font-weight:900;
+      text-shadow:0 4px 10px rgba(0,0,0,0.15);
+      margin-bottom:15px;
+    }
 
-        /* Social buttons */
-        .social-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin-bottom: 32px;
-            animation: fadeInUp 0.8s ease 1.2s both;
-        }
-        .social-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 28px;
-            border-radius: 999px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.35s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .social-btn.phone {
-            background: linear-gradient(135deg, #4CAF50, #388E3C);
-            color: var(--white);
-            box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
-        }
-        .social-btn.phone:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
-        }
-        .social-btn.instagram {
-            background: linear-gradient(135deg, #E1306C, #F77737);
-            color: var(--white);
-            box-shadow: 0 4px 16px rgba(225, 48, 108, 0.3);
-        }
-        .social-btn.instagram:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(225, 48, 108, 0.4);
-        }
+    .subtitle{
+      font-size:28px;
+      color:#fff;
+      font-weight:700;
+      margin-bottom:20px;
+      animation: pulse 2s infinite;
+    }
 
-        /* Footer text */
-        .footer-text {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            animation: fadeInUp 0.8s ease 1.4s both;
-        }
-        .footer-text a {
-            color: var(--warm-orange);
-            text-decoration: none;
-            font-weight: 600;
-        }
+    @keyframes pulse{
+      0%{opacity:0.7;}
+      50%{opacity:1;}
+      100%{opacity:0.7;}
+    }
 
-        /* Bouncing dots */
-        .dots {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-top: 24px;
-            animation: fadeInUp 0.8s ease 1.6s both;
-        }
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--warm-orange);
-            animation: dotBounce 1.4s ease-in-out infinite;
-        }
-        .dot:nth-child(2) { animation-delay: 0.2s; background: var(--green-deep); }
-        .dot:nth-child(3) { animation-delay: 0.4s; background: var(--peach-deep); }
-        @keyframes dotBounce {
-            0%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-12px); }
-        }
+    p{
+      color:#fff;
+      font-size:18px;
+      line-height:1.7;
+      opacity:0.95;
+    }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .line{
+      width:120px;
+      height:5px;
+      margin:25px auto;
+      border-radius:20px;
+      background:#fff;
+      animation: lineAnim 3s infinite;
+    }
 
-        /* Responsive */
-        @media (max-width: 640px) {
-            .main-card {
-                padding: 40px 28px;
-                border-radius: 32px;
-            }
-            .logo-name { font-size: 1.7rem; }
-            .logo-name span { font-size: 0.85rem; letter-spacing: 2px; }
-            .coming-soon-badge { font-size: 1rem; padding: 12px 24px; }
-            .tagline { font-size: 1rem; }
-            .social-buttons { flex-direction: column; }
-            .social-btn { justify-content: center; }
-            .logo-icon-wrap { width: 72px; height: 72px; font-size: 32px; }
-        }
-    </style>
+    @keyframes lineAnim{
+      0%{width:80px;}
+      50%{width:160px;}
+      100%{width:80px;}
+    }
+
+    .footer{
+      margin-top:30px;
+      color:#fff;
+      font-size:15px;
+      opacity:0.85;
+    }
+
+    @media(max-width:600px){
+      h1{
+        font-size:34px;
+      }
+
+      .subtitle{
+        font-size:22px;
+      }
+
+      p{
+        font-size:16px;
+      }
+
+      .logo{
+        font-size:55px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Animated background blobs -->
-    <div class="blob-container">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
+  <!-- Baloncuklar -->
+  <div class="bubble" style="left:10%; width:60px; height:60px; animation-duration:12s;"></div>
+  <div class="bubble" style="left:25%; width:30px; height:30px; animation-duration:9s;"></div>
+  <div class="bubble" style="left:40%; width:90px; height:90px; animation-duration:16s;"></div>
+  <div class="bubble" style="left:55%; width:45px; height:45px; animation-duration:11s;"></div>
+  <div class="bubble" style="left:70%; width:70px; height:70px; animation-duration:14s;"></div>
+  <div class="bubble" style="left:85%; width:35px; height:35px; animation-duration:10s;"></div>
+
+  <div class="container">
+    <div class="logo">🎈</div>
+
+    <h1>Minik Yürekler Anaokulu</h1>
+
+    <div class="line"></div>
+
+    <div class="subtitle">
+      Yakında Hizmetinizdedir ✨
     </div>
 
-    <!-- Floating particles -->
-    <div class="particles" id="particles"></div>
+    <p>
+      Sevgi dolu, güvenli ve eğlenceli bir eğitim dünyası çok yakında sizlerle.
+      Minik kalpler için büyük hayaller kuruyoruz 💛
+    </p>
 
-    <!-- Main card -->
-    <div class="main-card">
-        <div class="logo-area">
-            <div class="logo-icon-wrap">
-                <i class="fas fa-child"></i>
-            </div>
-            <div class="logo-name">
-                Minik Yürekler
-                <span>Anaokulu</span>
-            </div>
-        </div>
-
-        <div class="coming-soon-badge">
-            <i class="fas fa-sparkles"></i>
-            Yakında Hizmetinizde
-        </div>
-
-        <p class="tagline">
-            Güngören'in en samimi anaokulu olmaya hazırlanıyoruz.<br>
-            <strong>Çocuk merkezli, oyun temelli, potansiyel odaklı eğitim</strong> ile çok yakında kapılarımızı açıyoruz!
-        </p>
-
-        <div class="contact-info">
-            <a href="tel:05533231987" class="contact-item">
-                <i class="fas fa-phone-alt green"></i>
-                <span>0553 323 19 87</span>
-            </a>
-            <a href="https://instagram.com/minikyurekleranaokulu" target="_blank" class="contact-item">
-                <i class="fab fa-instagram pink"></i>
-                <span>@minikyurekleranaokulu</span>
-            </a>
-            <div class="contact-item" style="cursor: default;">
-                <i class="fas fa-map-marker-alt orange"></i>
-                <span>Güneştepe, Soğanlı Cd. No:121, Güngören/İstanbul</span>
-            </div>
-        </div>
-
-        <div class="social-buttons">
-            <a href="tel:05533231987" class="social-btn phone">
-                <i class="fas fa-phone"></i>
-                Hemen Ara
-            </a>
-            <a href="https://instagram.com/minikyurekleranaokulu" target="_blank" class="social-btn instagram">
-                <i class="fab fa-instagram"></i>
-                Bizi Takip Et
-            </a>
-        </div>
-
-        <div class="dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
-
-        <p class="footer-text" style="margin-top: 24px;">
-            © 2026 Minik Yürekler Anaokulu · Güngören/İstanbul
-        </p>
+    <div class="footer">
+      © 2026 Minik Yürekler Anaokulu
     </div>
+  </div>
 
-    <script>
-        // Generate floating particles
-        const particlesContainer = document.getElementById('particles');
-        const colors = ['#FF8C42', '#A5D6A7', '#FFD4B8', '#FFB380', '#E8F5E9'];
-        const shapes = ['circle', 'square', 'triangle'];
-
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            
-            const size = Math.random() * 20 + 8;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            const left = Math.random() * 100;
-            const duration = Math.random() * 15 + 10;
-            const delay = Math.random() * 15;
-            
-            particle.style.cssText = `
-                width: ${size}px;
-                height: ${size}px;
-                background: ${color};
-                left: ${left}%;
-                animation-duration: ${duration}s;
-                animation-delay: ${delay}s;
-                opacity: 0.4;
-            `;
-            
-            // Random shapes
-            if (Math.random() > 0.6) {
-                particle.style.borderRadius = '0';
-                particle.style.transform = `rotate(${Math.random() * 360}deg)`;
-            }
-            
-            particlesContainer.appendChild(particle);
-        }
-
-        // Mouse parallax effect on blobs
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 30;
-            const y = (e.clientY / window.innerHeight - 0.5) * 30;
-            
-            document.querySelectorAll('.blob').forEach((blob, index) => {
-                const factor = (index + 1) * 0.3;
-                blob.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
-            });
-        });
-    </script>
 </body>
-</html>'''
-
-with open('/mnt/agents/output/minik_yurekler_yakinda.html', 'w', encoding='utf-8') as f:
-    f.write(html_content)
-
-import os
-size = os.path.getsize('/mnt/agents/output/minik_yurekler_yakinda.html')
-print(f"Dosya başarıyla oluşturuldu!")
-print(f"Boyut: {size:,} bytes ({size/1024:.1f} KB)")
+</html>
