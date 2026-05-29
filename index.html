@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minik Yürekler Anaokulu – Güngören, İstanbul</title>
+  <meta name="description" content="Minik Yürekler Anaokulu – Oyun temelli, keşfe dayalı, sevgi dolu erken çocukluk eğitimi. Güneştepe, Güngören/İstanbul."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Acme&family=Varela+Round&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Varela Round', sans-serif; color: #2c2c2c; background: #fff; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ── PALETTE ── */
+    :root {
+      --navy:   #003957;
+      --teal:   #004f78;
+      --gold:   #BAC405;
+      --orange: #E8825A;
+      --light:  #f5f3ee;
+      --white:  #ffffff;
+      --text:   #2c2c2c;
+      --muted:  #666;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ──────────────────────────────────────
+       NAV
+    ────────────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: var(--white);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      transition: box-shadow .3s;
+    }
+    #nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.12); }
+
+    .nav-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 80px;
+    }
+
+    .nav-logo img { height: 52px; object-fit: contain; }
+
+    .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a {
+      font-family: 'Varela Round', sans-serif;
+      font-size: 13px; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--text); padding: 8px 14px; border-radius: 4px;
+      transition: color .25s, background .25s;
+    }
+    .nav-links a:hover { color: var(--navy); background: rgba(0,57,87,.06); }
+
+    .nav-cta {
+      background: var(--navy); color: var(--white) !important;
+      padding: 10px 22px !important; border-radius: 30px;
+      font-size: 12px !important; letter-spacing: .1em;
+      transition: background .25s, transform .2s !important;
+      box-shadow: 0 4px 12px rgba(0,57,87,.25);
+    }
+    .nav-cta:hover { background: var(--teal) !important; transform: translateY(-2px); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; flex-direction: column;
+      background: var(--white); border-top: 1px solid rgba(0,0,0,.06);
+      padding: 12px 32px 20px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Varela Round', sans-serif; font-size: 15px;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: var(--text); padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,.05);
+      transition: color .2s, padding-left .2s;
+    }
+    .mobile-menu a:hover { color: var(--navy); padding-left: 8px; }
+
+    /* ──────────────────────────────────────
+       HERO
+    ────────────────────────────────────── */
+    #hero {
+      padding-top: 80px; min-height: 100vh;
+      position: relative; display: flex; align-items: center; justify-content: center;
+      text-align: center; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.squarespace-cdn.com/content/v1/623b745f99da7f6d050e59e5/b36183d9-e215-435f-b989-f0c1c496b557/TSD_home_hero.jpg');
+      background-size: cover; background-position: 25% 34%;
+      transform: scale(1.04); transition: transform 8s ease;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0, 30, 50, 0.72);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 60px 24px; max-width: 800px;
+      animation: heroFadeUp .9s .15s both;
+    }
+    .hero-eyebrow {
+      font-family: 'Varela Round', sans-serif;
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(255,255,255,.75); margin-bottom: 18px;
+    }
+    .hero-h1 {
+      font-family: 'Acme', sans-serif;
+      font-size: clamp(44px, 7vw, 96px);
+      color: var(--white); line-height: 1.05; margin-bottom: 18px;
+      text-shadow: 0 2px 20px rgba(0,0,0,.3);
+    }
+    .hero-tagline {
+      font-family: 'Varela Round', sans-serif;
+      font-size: clamp(16px, 2.2vw, 22px);
+      letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(255,255,255,.8); margin-bottom: 44px;
+    }
+    .hero-btn {
+      display: inline-block;
+      background: var(--white); color: var(--navy);
+      font-family: 'Varela Round', sans-serif;
+      font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+      padding: 16px 40px; border-radius: 40px;
+      box-shadow: 0 6px 24px rgba(0,0,0,.25);
+      transition: transform .25s, box-shadow .25s, background .25s;
+      animation: heroFadeUp .9s .45s both;
+    }
+    .hero-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(0,0,0,.3);
+      background: var(--gold); color: var(--white);
+    }
+
+    /* scroll indicator */
+    .scroll-indicator {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: rgba(255,255,255,.5); font-size: 11px; letter-spacing: .12em;
+      text-transform: uppercase; animation: bounce 2s 2s infinite;
+    }
+    .scroll-indicator i { font-size: 18px; }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ──────────────────────────────────────
+       INTRO / ABOUT
+    ────────────────────────────────────── */
+    #hakkimizda { background: var(--white); padding: 90px 0; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    .container-wide { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+
+    .intro-text {
+      text-align: center; max-width: 760px; margin: 0 auto 60px;
+    }
+    .intro-text h2 {
+      font-family: 'Acme', sans-serif;
+      font-size: clamp(22px, 3vw, 32px);
+      color: var(--navy); line-height: 1.4; margin-bottom: 0;
+    }
+
+    .intro-video {
+      max-width: 860px; margin: 0 auto;
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 16px 60px rgba(0,0,0,.12);
+    }
+    .video-placeholder {
+      background: var(--navy); aspect-ratio: 16/9;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 16px;
+      color: rgba(255,255,255,.7); cursor: pointer;
+      transition: background .3s;
+    }
+    .video-placeholder:hover { background: var(--teal); }
+    .video-placeholder i { font-size: 56px; color: rgba(255,255,255,.8); }
+    .video-placeholder p { font-family: 'Varela Round', sans-serif; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; }
+
+    /* ──────────────────────────────────────
+       PROGRAMS
+    ────────────────────────────────────── */
+    #programlar { background: var(--light); padding: 90px 0; }
+
+    .programs-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px;
+    }
+
+    .prog-card {
+      background: var(--white); border-radius: 12px;
+      overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.07);
+      transition: transform .35s, box-shadow .35s;
+    }
+    .prog-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,.14);
+    }
+    .prog-img {
+      width: 100%; height: 220px; object-fit: cover;
+      transition: transform .5s;
+    }
+    .prog-card:hover .prog-img { transform: scale(1.04); }
+    .prog-img-wrap { overflow: hidden; }
+
+    .prog-body { padding: 28px 28px 32px; text-align: center; }
+    .prog-title {
+      font-family: 'Acme', sans-serif;
+      font-size: 20px; margin-bottom: 12px;
+    }
+    .prog-title.c1 { color: #007BA7; }
+    .prog-title.c2 { color: var(--gold); }
+    .prog-title.c3 { color: var(--navy); }
+
+    .prog-text {
+      font-family: 'Varela Round', sans-serif;
+      font-size: 14px; color: var(--muted); line-height: 1.75;
+    }
+
+    .programs-btn-wrap { text-align: center; margin-top: 48px; }
+    .btn-primary {
+      display: inline-block;
+      background: var(--navy); color: var(--white);
+      font-family: 'Varela Round', sans-serif;
+      font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+      padding: 16px 44px; border-radius: 40px;
+      box-shadow: 0 6px 22px rgba(0,57,87,.3);
+      transition: background .25s, transform .25s, box-shadow .25s;
+    }
+    .btn-primary:hover {
+      background: var(--teal); transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,57,87,.35);
+    }
+
+    /* ──────────────────────────────────────
+       TESTIMONIALS
+    ────────────────────────────────────── */
+    #yorumlar {
+      position: relative; padding: 90px 0;
+      background-image: url('https://images.squarespace-cdn.com/content/v1/623b745f99da7f6d050e59e5/9a81fc26-67fd-42f9-8f8d-2ac7eaaa02dd/TSD_background_white_stars.jpg');
+      background-size: cover; background-position: center;
+    }
+    #yorumlar::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0, 45, 70, 0.82);
+    }
+    .yorumlar-inner { position: relative; z-index: 1; }
+
+    .yorumlar-header {
+      text-align: center; margin-bottom: 52px;
+    }
+    .yorumlar-header h2 {
+      font-family: 'Acme', sans-serif;
+      font-size: clamp(22px, 3vw, 32px);
+      color: var(--white);
+    }
+
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+    }
+    .test-card {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px; padding: 30px 28px;
+      backdrop-filter: blur(8px);
+      transition: background .3s, transform .3s;
+    }
+    .test-card:hover {
+      background: rgba(255,255,255,.13); transform: translateY(-4px);
+    }
+    .test-stars { color: var(--gold); font-size: 14px; letter-spacing: 3px; margin-bottom: 16px; }
+    .test-text {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 15px; color: rgba(255,255,255,.85);
+      line-height: 1.8;
+    }
+
+    /* ──────────────────────────────────────
+       CONTACT / CTA
+    ────────────────────────────────────── */
+    #iletisim { background: var(--white); padding: 90px 0; }
+
+    .cta-block {
+      text-align: center; max-width: 680px; margin: 0 auto;
+    }
+    .cta-icon-img {
+      width: 90px; height: 90px; object-fit: contain; margin: 0 auto 28px;
+    }
+    .cta-block h2 {
+      font-family: 'Acme', sans-serif;
+      font-size: clamp(22px, 3vw, 32px);
+      color: var(--navy); margin-bottom: 16px;
+    }
+    .cta-block p {
+      font-size: 15px; color: var(--muted);
+      line-height: 1.8; margin-bottom: 36px;
+    }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-orange {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--orange); color: var(--white);
+      font-family: 'Varela Round', sans-serif;
+      font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+      padding: 15px 36px; border-radius: 40px;
+      box-shadow: 0 6px 20px rgba(232,130,90,.35);
+      transition: background .25s, transform .25s;
+    }
+    .btn-orange:hover { background: #d4694a; transform: translateY(-3px); }
+
+    .btn-insta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: var(--white);
+      font-family: 'Varela Round', sans-serif;
+      font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+      padding: 15px 36px; border-radius: 40px;
+      box-shadow: 0 6px 20px rgba(220,39,67,.3);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .btn-insta:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(220,39,67,.4); }
+
+    .btn-map {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--white); color: var(--navy);
+      border: 2px solid var(--navy);
+      font-family: 'Varela Round', sans-serif;
+      font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+      padding: 13px 36px; border-radius: 40px;
+      transition: background .25s, color .25s, transform .25s;
+    }
+    .btn-map:hover { background: var(--navy); color: var(--white); transform: translateY(-3px); }
+
+    /* contact info cards */
+    .contact-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 56px;
+    }
+    .cc {
+      border: 1px solid rgba(0,57,87,.12); border-radius: 10px;
+      padding: 24px 22px; display: flex; align-items: flex-start; gap: 14px;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+    }
+    .cc:hover {
+      border-color: var(--navy); transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,57,87,.1);
+    }
+    .cc-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(0,57,87,.07); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 18px; color: var(--navy); flex-shrink: 0;
+    }
+    .cc-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .12em; color: var(--muted); margin-bottom: 4px;
+    }
+    .cc-val { font-size: 14px; color: var(--text); line-height: 1.5; }
+    .cc-val a { color: var(--navy); transition: color .2s; }
+    .cc-val a:hover { color: var(--orange); }
+
+    /* ──────────────────────────────────────
+       MAP SECTION
+    ────────────────────────────────────── */
+    #harita { padding: 0 0 90px; background: var(--white); }
+    .map-wrap {
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,.12);
+      max-width: 1100px; margin: 0 auto;
+    }
+    .map-wrap iframe { width: 100%; height: 420px; border: none; display: block; }
+
+    /* ──────────────────────────────────────
+       FOOTER
+    ────────────────────────────────────── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.75);
+      padding: 64px 0 32px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      margin-bottom: 28px;
+    }
+    .footer-logo-text {
+      font-family: 'Acme', sans-serif;
+      font-size: 22px; color: var(--white);
+      margin-bottom: 14px;
+    }
+    .footer-desc {
+      font-size: 13px; line-height: 1.75;
+      color: rgba(255,255,255,.5); max-width: 300px;
+    }
+    .footer-social { display: flex; gap: 10px; margin-top: 22px; }
+    .fs-a {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: rgba(255,255,255,.7);
+      transition: background .25s, transform .25s;
+    }
+    .fs-a:hover { background: var(--gold); color: var(--navy); transform: translateY(-3px); }
+
+    .footer-col h4 {
+      font-family: 'Acme', sans-serif; font-size: 13px;
+      text-transform: uppercase; letter-spacing: .12em;
+      color: rgba(255,255,255,.45); margin-bottom: 18px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.5; }
+    .footer-col ul li a { color: rgba(255,255,255,.6); transition: color .2s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-col ul li i { width: 16px; opacity: .5; margin-right: 6px; }
+
+    .footer-bottom {
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,.3); }
+    .footer-heart { color: var(--gold); }
+
+    /* ──────────────────────────────────────
+       FAB
+    ────────────────────────────────────── */
+    .fab-phone {
+      position: fixed; bottom: 28px; right: 28px; z-index: 900;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 22px;
+      box-shadow: 0 8px 28px rgba(232,130,90,.5);
+      transition: transform .3s, box-shadow .3s;
+      animation: fabPulse 2.5s 3s infinite;
+    }
+    .fab-phone:hover {
+      transform: scale(1.12);
+      box-shadow: 0 14px 36px rgba(232,130,90,.6);
+    }
+    @keyframes fabPulse {
+      0%,100% { box-shadow: 0 8px 28px rgba(232,130,90,.5); }
+      50% { box-shadow: 0 8px 28px rgba(232,130,90,.5), 0 0 0 14px rgba(232,130,90,.1); }
+    }
+
+    /* ──────────────────────────────────────
+       SECTION LABEL
+    ────────────────────────────────────── */
+    .section-label {
+      text-align: center; margin-bottom: 48px;
+    }
+    .section-label h2 {
+      font-family: 'Acme', sans-serif;
+      font-size: clamp(28px, 4vw, 46px);
+      color: var(--navy);
+    }
+
+    /* ──────────────────────────────────────
+       ANIMATIONS
+    ────────────────────────────────────── */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ──────────────────────────────────────
+       RESPONSIVE
+    ────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .programs-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .contact-cards { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .programs-grid { grid-template-columns: 1fr; }
+      .container { padding: 0 20px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+      .contact-cards { grid-template-columns: 1fr; }
+      .cta-btns { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">
+      <!-- Text logo since we don't have an image yet -->
+      <span style="font-family:'Acme',sans-serif;font-size:20px;color:var(--navy);letter-spacing:.02em;">
+        💛 Minik Yürekler Anaokulu
+      </span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#hero">Ana Sayfa</a></li>
+      <li><a href="#hakkimizda">Hakkımızda</a></li>
+      <li><a href="#programlar">Eğitim</a></li>
+      <li><a href="#yorumlar">Aileler</a></li>
+      <li><a href="#iletisim" class="nav-cta">Bize Ulaşın</a></li>
+    </ul>
+
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#hero">Ana Sayfa</a>
+    <a href="#hakkimizda">Hakkımızda</a>
+    <a href="#programlar">Eğitim Anlayışımız</a>
+    <a href="#yorumlar">Aile Yorumları</a>
+    <a href="#iletisim">İletişim</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Güngören'in Kalbinde</p>
+    <h1 class="hero-h1">Minik Yürekler<br>Anaokulu</h1>
+    <p class="hero-tagline">Oyna &nbsp;·&nbsp; Keşfet &nbsp;·&nbsp; Büyü</p>
+    <a href="#programlar" class="hero-btn">Eğitim Programlarımız</a>
+  </div>
+  <div class="scroll-indicator">
+    <i class="fa-solid fa-chevron-down"></i>
+    <span>Keşfet</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ HAKKIMIZDA ═══════════════════════════════ -->
+<section id="hakkimizda">
+  <div class="container">
+    <div class="intro-text reveal">
+      <h2>
+        Minik Yürekler Anaokulu, çocukların en güzel yıllarını güvenli,
+        sevgi dolu ve keşfe açık bir ortamda geçirmeleri için özenle tasarlanmış
+        bir erken çocukluk eğitim yuvası olarak Güngören'de hizmet vermektedir.
+      </h2>
+    </div>
+
+    <div class="intro-video reveal">
+      <!-- Video placeholder – ileride YouTube embed eklenebilir -->
+      <div class="video-placeholder" onclick="this.innerHTML='<iframe width=\'100%\' height=\'100%\' src=\'https://www.youtube.com/embed/?autoplay=1\' frameborder=\'0\' allow=\'autoplay; fullscreen\' allowfullscreen style=\'aspect-ratio:16/9;border:none;\'></iframe>'">
+        <i class="fa-solid fa-circle-play"></i>
+        <p>Okulumuzdan Kareler – Video Yakında</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ PROGRAMLAR ═══════════════════════════════ -->
+<section id="programlar">
+  <div class="container">
+    <div class="section-label reveal">
+      <h2>Eğitim Programlarımız</h2>
+    </div>
+
+    <div class="programs-grid">
+
+      <!-- KART 1 -->
+      <div class="prog-card reveal">
+        <div class="prog-img-wrap">
+          <img class="prog-img" src="https://images.squarespace-cdn.com/content/v1/623b745f99da7f6d050e59e5/ede72364-ee6e-48dd-bf65-e8b5c7567694/TSD_image_toddler.jpg" alt="Küçük Tomurcuklar Sınıfı" loading="lazy"/>
+        </div>
+        <div class="prog-body">
+          <h3 class="prog-title c1">Küçük Tomurcuklar Sınıfı<br><small style="font-family:'Varela Round',sans-serif;font-size:13px;color:#777;">(2 – 3 Yaş)</small></h3>
+          <p class="prog-text">
+            Düşük öğretmen–çocuk oranımız sayesinde her çocuğa birebir ilgi gösteriyoruz.
+            Minik öğrencilerimiz yaşa uygun materyaller ve etkinliklerle dünyayı
+            merak ederek, keşfederek öğreniyor.
+          </p>
+        </div>
+      </div>
+
+      <!-- KART 2 -->
+      <div class="prog-card reveal" style="transition-delay:.1s">
+        <div class="prog-img-wrap">
+          <img class="prog-img" src="https://images.squarespace-cdn.com/content/v1/623b745f99da7f6d050e59e5/ce463bc6-efc4-4dfd-9ba0-c338376821b7/TSD_image_3s.jpg" alt="Oyun Bahçesi Sınıfı" loading="lazy"/>
+        </div>
+        <div class="prog-body">
+          <h3 class="prog-title c2">Oyun Bahçesi Sınıfı<br><small style="font-family:'Varela Round',sans-serif;font-size:13px;color:#777;">(3 – 4 Yaş)</small></h3>
+          <p class="prog-text">
+            Küçük öğrencilerimiz sayı sayma, harf ve sayı tanıma, fonolojik farkındalık
+            gibi temel kavramları öğrenirken bol bol oyun oynuyor ve sosyal becerilerini
+            geliştiriyor.
+          </p>
+        </div>
+      </div>
+
+      <!-- KART 3 -->
+      <div class="prog-card reveal" style="transition-delay:.2s">
+        <div class="prog-img-wrap">
+          <img class="prog-img" src="https://images.squarespace-cdn.com/content/v1/623b745f99da7f6d050e59e5/52ae3983-8243-423b-800b-55b01c7a0ed9/TSD_image_preschool.jpg" alt="Anaokulu Sınıfı" loading="lazy"/>
+        </div>
+        <div class="prog-body">
+          <h3 class="prog-title c3">Anaokulu Sınıfı<br><small style="font-family:'Varela Round',sans-serif;font-size:13px;color:#777;">(4 – 6 Yaş)</small></h3>
+          <p class="prog-text">
+            Programımız çocukları ilkokula hazırlar. Öğretmen rehberliğinde küçük ve büyük
+            grup çalışmaları, serbest seçim merkezleri ile sosyal, duygusal, dil, matematik
+            ve yaratıcı gelişim desteklenir.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="programs-btn-wrap reveal">
+      <a href="#iletisim" class="btn-primary">Kayıt ve Bilgi İçin Bize Ulaşın</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ TESTİMONİALS ═══════════════════════════════ -->
+<section id="yorumlar">
+  <div class="container yorumlar-inner">
+    <div class="yorumlar-header reveal">
+      <h2>Ailelerimiz Ne Diyor?</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">
+          "Kızımız Minik Yürekler Anaokulu'na başladığından beri inanılmaz bir gelişim
+          gösterdi. Hem sosyal hem de akademik olarak çok ileride. Öğretmenlerin
+          ilgisi ve samimiyeti gerçekten takdire değer."
+        </p>
+      </div>
+      <div class="test-card reveal" style="transition-delay:.1s">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">
+          "Ortam çok düzenli ve güvenli. Çocukların hem öğrendiği hem eğlendiği
+          mükemmel bir denge var. Sanat etkinlikleri, bahçe gezileri ve oyun saatleri
+          çok iyi planlanmış."
+        </p>
+      </div>
+      <div class="test-card reveal" style="transition-delay:.2s">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text">
+          "Yönetim ekibi her zaman açık ve ulaşılabilir. Aylık ders planları
+          etkileyici; oyun zamanı ve yapılandırılmış öğrenme arasındaki denge
+          mükemmel kurulmuş. İçim rahat."
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ İLETİŞİM / CTA ═══════════════════════════════ -->
+<section id="iletisim">
+  <div class="container">
+    <div class="cta-block reveal">
+      <img class="cta-icon-img" src="https://images.squarespace-cdn.com/content/v1/623b745f99da7f6d050e59e5/73baf08f-983c-42f5-9148-a18e5262dbde/TSD_icon_contact.png" alt="İletişim" loading="lazy"/>
+      <h2>Öğrenme Macerasına Hazır mısınız?</h2>
+      <p>
+        Programlarımız hakkında daha fazla bilgi almak veya kayıt yaptırmak için
+        bizi arayabilir, Instagram'dan mesaj atabilir ya da haritadan adresimize ulaşabilirsiniz.
+        En kısa sürede size döneceğiz!
+      </p>
+      <div class="cta-btns">
+        <a href="tel:+905533231987" class="btn-orange">
+          <i class="fa-solid fa-phone"></i> 0553 323 19 87
+        </a>
+        <a href="https://instagram.com/minikyurekleranaokulu" target="_blank" rel="noopener" class="btn-insta">
+          <i class="fa-brands fa-instagram"></i> Instagram
+        </a>
+        <a href="https://www.google.com/maps?daddr=G%C3%BCne%C5%9Ftepe,+So%C4%9Fanl%C4%B1+Cd.+No:121,+34560+G%C3%BCng%C3%B6ren%2F%C4%B0stanbul" target="_blank" rel="noopener" class="btn-map">
+          <i class="fa-solid fa-map-location-dot"></i> Haritada Göster
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-cards reveal">
+      <div class="cc">
+        <div class="cc-icon"><i class="fa-solid fa-phone"></i></div>
+        <div>
+          <div class="cc-label">Telefon</div>
+          <div class="cc-val"><a href="tel:+905533231987">0553 323 19 87</a></div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div>
+          <div class="cc-label">Adres</div>
+          <div class="cc-val">Güneştepe, Soğanlı Cd. No:121<br>34560 Güngören / İstanbul</div>
+        </div>
+      </div>
+      <div class="cc">
+        <div class="cc-icon"><i class="fa-brands fa-instagram"></i></div>
+        <div>
+          <div class="cc-label">Instagram</div>
+          <div class="cc-val">
+            <a href="https://instagram.com/minikyurekleranaokulu" target="_blank" rel="noopener">@minikyurekleranaokulu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ HARİTA ═══════════════════════════════ -->
+<section id="harita">
+  <div class="container">
+    <div class="map-wrap reveal">
+      <iframe
+        title="Minik Yürekler Anaokulu Konum"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010!2d28.875!3d41.003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cbc2a824367f47%3A0x149e9c6787cd7e49!2zR8O8bmXFn3RlcGUsIFNvxJ9hbmzEsSBDZC4gTm86MTIxLCAzNDU2MCBHw7xuZ8O2cmVuL8Swc3RhbmJ1bA!5e0!3m2!1str!2str!4v1"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+
+      <div>
+        <div class="footer-logo-text">💛 Minik Yürekler Anaokulu</div>
+        <p class="footer-desc">
+          Güngören'in kalbinde, oyun temelli ve sevgi dolu erken çocukluk eğitimi.
+          Her çocuğun potansiyelini keşfetmesi için buradayız.
+        </p>
+        <div class="footer-social">
+          <a href="https://instagram.com/minikyurekleranaokulu" target="_blank" rel="noopener" class="fs-a" title="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="tel:+905533231987" class="fs-a" title="Telefon">
+            <i class="fa-solid fa-phone"></i>
+          </a>
+          <a href="https://www.google.com/maps?daddr=G%C3%BCne%C5%9Ftepe,+So%C4%9Fanl%C4%B1+Cd.+No:121,+34560+G%C3%BCng%C3%B6ren%2F%C4%B0stanbul" target="_blank" rel="noopener" class="fs-a" title="Harita">
+            <i class="fa-solid fa-location-dot"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Konum</h4>
+        <ul>
+          <li><i class="fa-solid fa-location-dot"></i> Güneştepe,</li>
+          <li>Soğanlı Cd. No:121</li>
+          <li>34560 Güngören / İstanbul</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Çalışma Saatleri</h4>
+        <ul>
+          <li>Pazartesi – Cuma</li>
+          <li>07:30 – 18:00</li>
+          <li style="color:rgba(255,255,255,.35);font-size:12px;">*Resmi tatil günleri hariç</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>İletişim</h4>
+        <ul>
+          <li><a href="tel:+905533231987"><i class="fa-solid fa-phone"></i> 0553 323 19 87</a></li>
+          <li><a href="https://instagram.com/minikyurekleranaokulu" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i> @minikyurekleranaokulu</a></li>
+          <li><a href="https://www.google.com/maps?daddr=G%C3%BCne%C5%9Ftepe,+So%C4%9Fanl%C4%B1+Cd.+No:121,+34560+G%C3%BCng%C3%B6ren%2F%C4%B0stanbul" target="_blank" rel="noopener"><i class="fa-solid fa-map-location-dot"></i> Haritada Gör</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Minik Yürekler Anaokulu. Tüm hakları saklıdır. <span class="footer-heart">♥</span> ile yapıldı.</p>
+      <a href="#hero" style="font-size:12px;color:rgba(255,255,255,.3);transition:color .2s;" onmouseover="this.style.color='#BAC405'" onmouseout="this.style.color='rgba(255,255,255,.3)'">Yukarı Çık ↑</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating phone button -->
+<a href="tel:+905533231987" class="fab-phone" title="Bizi Ara" aria-label="Ara">
+  <i class="fa-solid fa-phone"></i>
+</a>
+
+<!-- ═══════════════════════════════ JS ═══════════════════════════════ -->
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Hamburger
+  const ham = document.getElementById('hamburger');
+  const mob = document.getElementById('mobile-menu');
+  ham.addEventListener('click', () => {
+    ham.classList.toggle('open');
+    mob.classList.toggle('open');
+  });
+  mob.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    ham.classList.remove('open');
+    mob.classList.remove('open');
+  }));
+
+  // Hero bg zoom trigger
+  window.addEventListener('load', () => {
+    document.getElementById('hero-bg').classList.add('loaded');
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const ro = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => ro.observe(el));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const t = document.querySelector(this.getAttribute('href'));
+      if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 80, behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
